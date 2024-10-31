@@ -10,10 +10,10 @@ public class listarUsuarios {
         try {
             FileReader arqUsuario = new FileReader("Model/usuarios.csv");
             BufferedReader lerArqUsuario = new BufferedReader(arqUsuario);
-            String linha = lerArqUsuario.readLine();
+            String linha;
             int aux = 1;
 
-            while (linha != null) {
+            while ((linha =  lerArqUsuario.readLine())!= null) {
                 String[] campos = linha.split(",");
 
                 if (campos.length > 0) {
@@ -21,7 +21,6 @@ public class listarUsuarios {
                     System.out.println(aux + " - " + primeiraColuna);
                     aux++;
                 }
-                linha = lerArqUsuario.readLine();
             }
             arqUsuario.close();
         } catch (IOException e) {

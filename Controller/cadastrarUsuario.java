@@ -18,12 +18,11 @@ public class cadastrarUsuario {
             FileReader arq = new FileReader("Model/formulario.csv");
             BufferedReader lerArq = new BufferedReader(arq);
 
-            String linha = lerArq.readLine();
-            while (linha != null) {
+            String linha;
+            while ((linha = lerArq.readLine()) != null) {
                 System.out.println(linha);
                 imputUsuario = scanner.nextLine();
                 dados.add(imputUsuario);
-                linha = lerArq.readLine(); // lê da segunda até a última linha
             }
             arq.close();
         } catch (IOException e) {
@@ -39,13 +38,13 @@ public class cadastrarUsuario {
             PrintWriter gravarArqUsuario = new PrintWriter(arquivoUsuario);
 
             if (!usuario.getNome().isEmpty() && !usuario.getEmail().isEmpty() && usuario.getIdade() != 0 && usuario.getAltura()!= 0) {
-                gravarArqUsuario.printf(usuario.getNome() + "," +
+                gravarArqUsuario.printf( "\n" + usuario.getNome() + "," +
                         usuario.getEmail() + "," +
                         usuario.getIdade() + "," +
-                        usuario.getAltura() + "\n");
+                        usuario.getAltura());
             }
-
             arquivoUsuario.close();
+            System.out.println("Cadastro realizado com sucesso!");
         } catch (IOException e) {
             e.printStackTrace();
         }

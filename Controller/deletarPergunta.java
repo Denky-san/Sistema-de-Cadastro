@@ -9,53 +9,53 @@ public class deletarPergunta {
 
     public deletarPergunta(){
         try {
-            //primeira leitura para saber qtd de linhas no arquivo
             Scanner scanner = new Scanner(System.in);
             FileReader arq = new FileReader("Model/formulario.csv");
             BufferedReader lerArq = new BufferedReader(arq);
             List<String> perguntas = new ArrayList<>();
-            int qtdLinhas = 0;
 
-            String linha = lerArq.readLine();
-            while (linha != null) {
-                qtdLinhas++;
-                linha = lerArq.readLine();
+            //Leitura para carregar as perguntas em uma lista
+            String linha;
+            while ((linha = lerArq.readLine()) != null) {
+                perguntas.add(linha);
             }
-            arq.close();
+            lerArq.close();
 
             int pergunta;
-            System.out.println("Qual pergunta você deseja remover?");
-            pergunta = Integer.parseInt(scanner.nextLine());
-
-            while (pergunta <= 4 || pergunta > qtdLinhas ){
-                System.out.println("Pergunta indisponivel para remoção! Qual pergunta você deseja remover?");
+            do{
+                System.out.println("Qual pergunta você deseja remover? Para voltar ao menu anterior digite '0'");
                 pergunta = Integer.parseInt(scanner.nextLine());
-            }
 
-            //segunda leitura para criar lista com a pergunta removida
-            FileReader arq2 = new FileReader("Model/formulario.csv");
-            BufferedReader lerArq2 = new BufferedReader(arq2);
-            int aux = 0;
-            linha = lerArq2.readLine();
-            while (linha != null ) {
-                aux++;
-                if (aux!= pergunta && !linha.trim().isEmpty()){
-                    perguntas.add(linha);
+                if (pergunta == 0) {
+                    System.out.println("Operação cancelada.");
+                    return;
                 }
-                linha = lerArq2.readLine(); // lê da segunda até a última linha
+                if (pergunta <= 4) {
+                    System.out.println("Pergunta indisponível para remoção! Tente novamente.");
+                }
             }
-            arq2.close();
+            while (pergunta <= 4);
+
+            perguntas.remove(pergunta - 1);
 
             //criação do arquivo de perguntas novamente com a pergunta escolhida removida
             FileWriter arquivo = new FileWriter("Model/formulario.csv");
             PrintWriter gravarArq = new PrintWriter(arquivo);
-            for (int i = 0; i < qtdLinhas - 1; i++){
-                gravarArq.printf(perguntas.get(i) + "\n");
+
+            for (int i = 0; i < perguntas.size(); i++) {
+                if (i == perguntas.size() - 1) {
+                    gravarArq.print(perguntas.get(i));
+                } else {
+                    gravarArq.println(perguntas.get(i));
+                }
             }
             arquivo.close();
+            System.out.println("Pergunta deletada com sucesso!");
 
         } catch (IOException e) {
-            System.err.println();
+            System.err.println("Erro ao acessar o arquivo.");
+        } catch (NumberFormatException e) {
+            System.err.println("Entrada inválida! Digite um número válido.");
         }
     }
 }
